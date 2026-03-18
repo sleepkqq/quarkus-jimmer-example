@@ -1,0 +1,41 @@
+FROM quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25 AS build
+
+USER root
+RUN mkdir -p /usr/src/app && chown quarkus:quarkus /usr/src/app
+
+WORKDIR /usr/src/app
+USER quarkus
+
+COPY --chown=quarkus:quarkus gradle gradle
+COPY --chown=quarkus:quarkus gradlew gradlew
+COPY --chown=quarkus:quarkus gradle.properties gradle.properties
+COPY --chown=quarkus:quarkus settings.gradle.kts settings.gradle.kts
+COPY --chown=quarkus:quarkus build.gradle.kts build.gradle.kts
+COPY --chown=quarkus:quarkus quarkus-jimmer-example-model/build.gradle.kts quarkus-jimmer-example-model/build.gradle.kts
+COPY --chown=quarkus:quarkus quarkus-jimmer-example-service/build.gradle.kts quarkus-jimmer-example-service/build.gradle.kts
+
+COPY --chown=quarkus:quarkus .m2-cache /home/quarkus/.m2/repository/io/github/flynndi
+
+RUN chmod +x ./gradlew && \
+    ./gradlew dependencies --no-daemon || true
+
+COPY --chown=quarkus:quarkus . .
+
+RUN chmod +x ./gradlew && \
+    ./gradlew :quarkus-jimmer-example-service:build \
+    -Dquarkus.native.enabled=true \
+    -Dquarkus.package.jar.enabled=false \
+    -Dquarkus.native.native-image-xmx=4g \
+    -x test --no-daemon
+
+FROM registry.access.redhat.com/ubi9/ubi-minimal:9.6
+
+WORKDIR /app
+
+COPY --from=build \
+    /usr/src/app/quarkus-jimmer-example-service/build/*-runner \
+    /app/app
+
+EXPOSE 8080
+
+CMD ["./app"]

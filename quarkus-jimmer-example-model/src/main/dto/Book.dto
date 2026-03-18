@@ -1,0 +1,19 @@
+export com.example.model.entity.Book
+
+BookView {
+    #allScalars
+    id(author) as authorId
+}
+
+BookDetailView {
+    #allScalars
+    author {
+        #allScalars
+    }
+}
+
+input BookInput {
+    title
+    price
+    id(author) as authorId
+}

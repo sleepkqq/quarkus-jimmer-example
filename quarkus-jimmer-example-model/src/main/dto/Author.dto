@@ -1,0 +1,5 @@
+export com.example.model.entity.Author
+
+AuthorView {
+    #allScalars
+}

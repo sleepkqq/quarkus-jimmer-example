@@ -1,0 +1,32 @@
+quarkus:
+  application:
+    name: quarkus-jimmer-example
+  index-dependency:
+    model:
+      group-id: com.example
+      artifact-id: quarkus-jimmer-example-model
+  jimmer:
+    language: kotlin
+    show-sql: true
+    pretty-sql: true
+    database-validation:
+      mode: NONE
+  virtual-threads:
+    enabled: true
+  http:
+    port: 8080
+  banner:
+    enabled: true
+  native:
+    builder-image: quay.io/quarkus/ubi9-quarkus-mandrel-builder-image:jdk-25
+    additional-build-args: --no-fallback,--initialize-at-run-time=org.babyfish.jimmer.sql.dialect.H2Dialect
+  datasource:
+    db-kind: postgresql
+    jdbc:
+      url: jdbc:postgresql://localhost:5432/quarkus_jimmer
+    username: ${POSTGRES_USER:postgres}
+    password: ${POSTGRES_PASSWORD:postgres}
+  liquibase:
+    change-log: db/changeLog.yaml
+    migrate-at-start: true
+

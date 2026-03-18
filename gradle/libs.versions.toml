@@ -1,0 +1,41 @@
+[versions]
+quarkus-platform = "3.32.3"
+kotlin = "2.3.20"
+jimmer = "0.9.114"
+quarkus-jimmer = "999-SNAPSHOT"
+testcontainers = "2.0.3"
+
+[libraries]
+# Quarkus BOM
+quarkus-bom = { group = "io.quarkus.platform", name = "quarkus-bom", version.ref = "quarkus-platform" }
+
+# Quarkus
+quarkus-kotlin = { group = "io.quarkus", name = "quarkus-kotlin" }
+quarkus-arc = { group = "io.quarkus", name = "quarkus-arc" }
+quarkus-rest = { group = "io.quarkus", name = "quarkus-rest" }
+quarkus-rest-jackson = { group = "io.quarkus", name = "quarkus-rest-jackson" }
+quarkus-config-yaml = { group = "io.quarkus", name = "quarkus-config-yaml" }
+quarkus-smallrye-health = { group = "io.quarkus", name = "quarkus-smallrye-health" }
+
+# Jimmer
+jimmer-core-kotlin = { group = "org.babyfish.jimmer", name = "jimmer-core-kotlin", version.ref = "jimmer" }
+jimmer-sql-kotlin = { group = "org.babyfish.jimmer", name = "jimmer-sql-kotlin", version.ref = "jimmer" }
+jimmer-ksp = { group = "org.babyfish.jimmer", name = "jimmer-ksp", version.ref = "jimmer" }
+quarkus-jimmer = { group = "io.github.flynndi", name = "quarkus-jimmer", version.ref = "quarkus-jimmer" }
+
+# Database
+quarkus-jdbc-postgresql = { group = "io.quarkus", name = "quarkus-jdbc-postgresql" }
+quarkus-liquibase = { group = "io.quarkus", name = "quarkus-liquibase" }
+
+# Test
+quarkus-junit5 = { group = "io.quarkus", name = "quarkus-junit5" }
+rest-assured = { group = "io.rest-assured", name = "rest-assured" }
+testcontainers = { group = "org.testcontainers", name = "testcontainers", version.ref = "testcontainers" }
+testcontainers-junit = { group = "org.testcontainers", name = "testcontainers-junit-jupiter", version.ref = "testcontainers" }
+testcontainers-postgresql = { group = "org.testcontainers", name = "testcontainers-postgresql", version.ref = "testcontainers" }
+
+[plugins]
+quarkus = { id = "io.quarkus", version.ref = "quarkus-platform" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-allopen = { id = "org.jetbrains.kotlin.plugin.allopen", version.ref = "kotlin" }
+ksp = { id = "com.google.devtools.ksp", version = "2.3.6" }

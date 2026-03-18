@@ -1,0 +1,95 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2026-03-18-create-author
+      author: sleepkqq
+      changes:
+        - createTable:
+            tableName: author
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  - changeSet:
+      id: 2026-03-18-create-book
+      author: sleepkqq
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: price
+                  type: decimal(10, 2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_book_author
+                    references: author(id)
+
+  - changeSet:
+      id: 2026-03-18-insert-initial-data
+      author: sleepkqq
+      changes:
+        - insert:
+            tableName: author
+            columns:
+              - column:
+                  name: name
+                  value: Martin Fowler
+        - insert:
+            tableName: author
+            columns:
+              - column:
+                  name: name
+                  value: Robert C. Martin
+        - insert:
+            tableName: book
+            columns:
+              - column:
+                  name: title
+                  value: Refactoring
+              - column:
+                  name: price
+                  valueNumeric: 49.99
+              - column:
+                  name: author_id
+                  valueNumeric: 1
+        - insert:
+            tableName: book
+            columns:
+              - column:
+                  name: title
+                  value: Clean Code
+              - column:
+                  name: price
+                  valueNumeric: 39.99
+              - column:
+                  name: author_id
+                  valueNumeric: 2

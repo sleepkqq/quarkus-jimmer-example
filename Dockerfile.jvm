@@ -1,0 +1,43 @@
+FROM eclipse-temurin:25-jdk-alpine AS build
+
+RUN adduser -D myuser && \
+    mkdir -p /usr/src/app && \
+    chown myuser:myuser /usr/src/app
+
+USER myuser
+WORKDIR /usr/src/app
+
+COPY --chown=myuser:myuser gradle gradle
+COPY --chown=myuser:myuser gradlew gradlew
+COPY --chown=myuser:myuser gradle.properties gradle.properties
+COPY --chown=myuser:myuser settings.gradle.kts settings.gradle.kts
+COPY --chown=myuser:myuser build.gradle.kts build.gradle.kts
+COPY --chown=myuser:myuser quarkus-jimmer-example-model/build.gradle.kts quarkus-jimmer-example-model/build.gradle.kts
+COPY --chown=myuser:myuser quarkus-jimmer-example-service/build.gradle.kts quarkus-jimmer-example-service/build.gradle.kts
+
+RUN chmod +x ./gradlew && \
+    ./gradlew dependencies --no-daemon || true
+
+COPY --chown=myuser:myuser . .
+
+RUN chmod +x ./gradlew && \
+    ./gradlew :quarkus-jimmer-example-service:build -Dquarkus.package.jar.type=uber-jar -x test --no-daemon
+
+FROM eclipse-temurin:25-jre-alpine
+
+RUN adduser -D myuser && \
+    mkdir -p /app && \
+    chown myuser:myuser /app
+
+USER myuser
+WORKDIR /app
+
+COPY --from=build --chown=myuser:myuser \
+    /usr/src/app/quarkus-jimmer-example-service/build/*-runner.jar \
+    /app/quarkus-jimmer-example.jar
+
+EXPOSE 8080
+
+CMD ["java", \
+    "-Dquarkus.profile=prod", \
+    "-jar", "quarkus-jimmer-example.jar"]

@@ -1,0 +1,38 @@
+# Git
+.git
+.github
+.gitignore
+.gitattributes
+
+# IDE
+.idea
+.vscode
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build output
+**/build/
+**/out/
+.gradle/
+
+# Local configs
+.env.*
+*.local
+
+# Kubernetes
+k8s/
+
+# Docs
+README.md
+LICENSE
+*.md
+docs/
+
+# Logs
+*.log
+
+# Qodo
+.qodo/
