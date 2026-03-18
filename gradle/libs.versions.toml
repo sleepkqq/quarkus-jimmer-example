@@ -1,7 +1,7 @@
 [versions]
 quarkus-platform = "3.32.3"
 kotlin = "2.3.20"
-jimmer = "0.9.114"
+jimmer = "0.9.120"
 quarkus-jimmer = "999-SNAPSHOT"
 testcontainers = "2.0.3"
 
